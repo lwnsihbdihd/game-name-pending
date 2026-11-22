@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dyu3lc8kqqnq1"]
+
+[ext_resource type="Texture2D" uid="uid://ba1o2uhvrq6rs" path="res://assets/icon.svg" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://d4kfqv5reoc4y" path="res://scripts/player.gd" id="1_g2els"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ujbg4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3vyb7")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ur1y7"]
+size = Vector2(128, 128)
+
+[node name="Player" type="CharacterBody2D" unique_id=497664569]
+script = ExtResource("1_g2els")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1605902082]
+sprite_frames = SubResource("SpriteFrames_ujbg4")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionBox" type="CollisionShape2D" parent="." unique_id=452607272]
+shape = SubResource("RectangleShape2D_ur1y7")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=496909279]
