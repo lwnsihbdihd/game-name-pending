@@ -19,6 +19,7 @@ size = Vector2(128, 128)
 
 [node name="Player" type="CharacterBody2D" unique_id=497664569]
 script = ExtResource("1_g2els")
+dashMaxCD = 3.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1605902082]
 sprite_frames = SubResource("SpriteFrames_ujbg4")
