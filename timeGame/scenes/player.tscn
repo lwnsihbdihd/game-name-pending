@@ -18,6 +18,7 @@ animations = [{
 size = Vector2(128, 128)
 
 [node name="Player" type="CharacterBody2D" unique_id=497664569]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_g2els")
 dashMaxCD = 3.0
 
