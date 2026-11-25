@@ -1,7 +1,7 @@
 extends Node2D
 @onready var level: Node2D = $Level
-@onready var enemy_spawn_timer: Timer = $EnemySpawnTimer
-@onready var enemies: Node2D = $Enemies
+@export var enemy_spawn_timer: Timer
+@export var enemies: Node2D
 
 var player: Node
 var playerCamera: Node

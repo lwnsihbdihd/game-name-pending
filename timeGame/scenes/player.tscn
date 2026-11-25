@@ -2,9 +2,26 @@
 
 [ext_resource type="Texture2D" uid="uid://ba1o2uhvrq6rs" path="res://assets/icon.svg" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://d4kfqv5reoc4y" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="PackedScene" uid="uid://d2a27ehmuec7n" path="res://scenes/attack_component.tscn" id="3_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://c70mindloupha" path="res://scenes/health_component.tscn" id="4_tuyoq"]
+[ext_resource type="PackedScene" uid="uid://cdyr7vcju4p2g" path="res://scenes/hitbox_component.tscn" id="5_fjrip"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ujbg4"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3vyb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_3vyb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_3vyb7")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_3vyb7")
@@ -17,17 +34,46 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ur1y7"]
 size = Vector2(128, 128)
 
-[node name="Player" type="CharacterBody2D" unique_id=497664569]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujbg4"]
+size = Vector2(120, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fik85"]
+size = Vector2(105, 140)
+
+[node name="Player" type="CharacterBody2D" unique_id=497664569 node_paths=PackedStringArray("attackComponent", "attackArea", "healthComponent", "hitboxComponent", "sprite")]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_g2els")
+attackComponent = NodePath("AttackComponent")
+attackArea = NodePath("AttackComponent/AttackArea")
+healthComponent = NodePath("HealthComponent")
+hitboxComponent = NodePath("HitboxComponent")
+sprite = NodePath("Sprite")
 dashMaxCD = 3.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1605902082]
 sprite_frames = SubResource("SpriteFrames_ujbg4")
-animation = &"idle"
+animation = &"attack"
 autoplay = "idle"
 
 [node name="CollisionBox" type="CollisionShape2D" parent="." unique_id=452607272]
 shape = SubResource("RectangleShape2D_ur1y7")
 
 [node name="Camera" type="Camera2D" parent="." unique_id=496909279]
+
+[node name="HealthComponent" parent="." unique_id=46717471 instance=ExtResource("4_tuyoq")]
+maxHealth = 30
+
+[node name="HitboxComponent" parent="." unique_id=850454870 node_paths=PackedStringArray("healthComponent") instance=ExtResource("5_fjrip")]
+healthComponent = NodePath("../HealthComponent")
+
+[node name="Hitbox" type="CollisionShape2D" parent="HitboxComponent" unique_id=2036057800]
+shape = SubResource("RectangleShape2D_ujbg4")
+
+[node name="AttackComponent" parent="." unique_id=1130353186 instance=ExtResource("3_qlg0r")]
+
+[node name="AttackArea" type="CollisionShape2D" parent="AttackComponent" unique_id=504307734]
+position = Vector2(128, 2)
+shape = SubResource("RectangleShape2D_fik85")
+disabled = true
+
+[connection signal="area_entered" from="AttackComponent" to="." method="onAreaEnteredAttackArea"]

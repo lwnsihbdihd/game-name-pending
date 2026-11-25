@@ -2,18 +2,70 @@
 
 [ext_resource type="Texture2D" uid="uid://ba1o2uhvrq6rs" path="res://assets/icon.svg" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://dbyvdd234rdl7" path="res://scripts/enemy.gd" id="1_md0e3"]
+[ext_resource type="PackedScene" uid="uid://d2a27ehmuec7n" path="res://scenes/attack_component.tscn" id="3_c4w8v"]
+[ext_resource type="PackedScene" uid="uid://cdyr7vcju4p2g" path="res://scenes/hitbox_component.tscn" id="4_xwavj"]
+[ext_resource type="PackedScene" uid="uid://c70mindloupha" path="res://scenes/health_component.tscn" id="5_nenq2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ujbg4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7p1mj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_7p1mj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_7p1mj")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ujbg4"]
-size = Vector2(112, 114)
+size = Vector2(128, 128)
 
-[node name="Enemy" type="Area2D" unique_id=123737498]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_du8vl"]
+size = Vector2(108, 124)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ur1y7"]
+size = Vector2(67, 67)
+
+[node name="Enemy" type="Area2D" unique_id=123737498 node_paths=PackedStringArray("attackComponent", "hitboxComponent", "healthComponent", "attackCD")]
 script = ExtResource("1_md0e3")
+attackComponent = NodePath("AttackComponent")
+hitboxComponent = NodePath("HitboxComponent")
+healthComponent = NodePath("HealthComponent")
+attackCD = NodePath("AttackCD")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1163458556]
-texture = ExtResource("1_7p1mj")
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=256514667]
+sprite_frames = SubResource("SpriteFrames_ujbg4")
+animation = &"attack"
 flip_v = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1047647730]
 shape = SubResource("RectangleShape2D_ujbg4")
 
+[node name="AttackComponent" parent="." unique_id=1130353186 node_paths=PackedStringArray("hitboxComponent") instance=ExtResource("3_c4w8v")]
+hitboxComponent = NodePath("../HitboxComponent")
+attackDamage = 5
+
+[node name="AttackArea" type="CollisionShape2D" parent="AttackComponent" unique_id=2141543443]
+position = Vector2(126, 3)
+shape = SubResource("RectangleShape2D_du8vl")
+
+[node name="HitboxComponent" parent="." unique_id=850454870 node_paths=PackedStringArray("healthComponent") instance=ExtResource("4_xwavj")]
+healthComponent = NodePath("../HealthComponent")
+
+[node name="Hitbox" type="CollisionShape2D" parent="HitboxComponent" unique_id=1346816118]
+position = Vector2(23.5, 23.5)
+shape = SubResource("RectangleShape2D_ur1y7")
+
+[node name="HealthComponent" parent="." unique_id=46717471 instance=ExtResource("5_nenq2")]
+maxHealth = 20
+
+[node name="AttackCD" type="Timer" parent="." unique_id=1628205214]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="AttackCD" to="." method="onAttackCDTimeout"]
