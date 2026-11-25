@@ -2,12 +2,21 @@
 
 [ext_resource type="Texture2D" uid="uid://ba1o2uhvrq6rs" path="res://assets/icon.svg" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://sqhec2hiiary" path="res://scenes/level.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://ct14sl2awau6m" path="res://scripts/main.gd" id="1_sugp2"]
 
 [node name="Main" type="Node2D" unique_id=1558899573]
+script = ExtResource("1_sugp2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=590751195]
 position = Vector2(508, 173)
 scale = Vector2(9.796875, 4.890625)
 texture = ExtResource("1_0wfyh")
 
-[node name="level" parent="." unique_id=1137845976 instance=ExtResource("1_o5qli")]
+[node name="Level" parent="." unique_id=1137845976 instance=ExtResource("1_o5qli")]
+
+[node name="EnemySpawnTimer" type="Timer" parent="." unique_id=1974971005]
+autostart = true
+
+[node name="Enemies" type="Node2D" parent="." unique_id=256744743]
+
+[connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

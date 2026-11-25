@@ -64,7 +64,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func die() -> void:
-	isAlive = false
+	pass
+	#isAlive = false
 
 func revive() -> void:
 	isAlive = true
