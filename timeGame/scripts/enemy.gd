@@ -1,4 +1,5 @@
-extends Area2D
+extends CharacterBody2D
+@export var sprite: AnimatedSprite2D
 @export var attackComponent: AttackComponent
 @export var hitboxComponent: HitboxComponent
 @export var healthComponent: HealthComponent
@@ -6,12 +7,10 @@ extends Area2D
 
 var level: Node
 
-var player: Node
+var player: Player
 var playerX: float
 var playerY: float
-
-var diffInX: float
-var diffInY: float
+var direction: int
 
 var canAttack: bool = true
 
@@ -25,12 +24,16 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	position.x = move_toward(position.x, player.position.x, delta * SPEED)
-	position.y = move_toward(position.y, player.position.y, delta * SPEED)
+func _process(_delta: float) -> void:
+	if velocity.x > 1:
+		sprite.flip_h = false
+	elif velocity.x < -1:
+		sprite.flip_h = true
+
 
 func die() -> void:
 	queue_free()
+
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Player":

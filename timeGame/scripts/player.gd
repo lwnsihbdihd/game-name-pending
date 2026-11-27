@@ -1,7 +1,8 @@
 extends CharacterBody2D
+class_name Player
+
 @export var attackComponent: AttackComponent
 @export var attackArea: CollisionShape2D
-
 @export var healthComponent: HealthComponent
 @export var hitboxComponent: HitboxComponent
 

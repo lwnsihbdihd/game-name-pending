@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dibttguo52u7s"]
+
+[ext_resource type="Texture2D" uid="uid://ba1o2uhvrq6rs" path="res://assets/icon.svg" id="1_l5glv"]
+[ext_resource type="PackedScene" uid="uid://cdyr7vcju4p2g" path="res://scenes/hitbox_component.tscn" id="2_eoqba"]
+[ext_resource type="PackedScene" uid="uid://d2a27ehmuec7n" path="res://scenes/attack_component.tscn" id="3_qncy5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujbg4"]
+size = Vector2(14, 30)
+
+[node name="Bullet" type="Area2D" unique_id=813632111]
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1830275526]
+scale = Vector2(0.109375, 0.234375)
+texture = ExtResource("1_l5glv")
+
+[node name="Collisionbox" type="CollisionShape2D" parent="." unique_id=45986487]
+shape = SubResource("RectangleShape2D_ujbg4")
+
+[node name="HitboxComponent" parent="." unique_id=850454870 instance=ExtResource("2_eoqba")]
+
+[node name="AttackComponent" parent="." unique_id=1703271934 instance=ExtResource("3_qncy5")]

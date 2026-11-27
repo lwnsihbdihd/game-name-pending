@@ -4,3 +4,7 @@
 
 [node name="AttackComponent" type="Area2D" unique_id=1703271934]
 script = ExtResource("1_svtj4")
+
+[node name="AttackCD" type="Timer" parent="." unique_id=1123190122]
+
+[connection signal="timeout" from="AttackCD" to="." method="onAttackCDTimeout"]

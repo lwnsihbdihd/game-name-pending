@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d0kn8vfdrha3g"]
+
+[ext_resource type="Script" uid="uid://whl876eufkgj" path="res://scripts/ai_component.gd" id="1_maqkl"]
+
+[node name="AIComponent" type="Node2D" unique_id=1671444073]
+script = ExtResource("1_maqkl")

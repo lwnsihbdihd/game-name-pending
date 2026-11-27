@@ -42,6 +42,7 @@ size = Vector2(105, 140)
 
 [node name="Player" type="CharacterBody2D" unique_id=497664569 node_paths=PackedStringArray("attackComponent", "attackArea", "healthComponent", "hitboxComponent", "sprite")]
 scale = Vector2(0.5, 0.5)
+collision_mask = 6
 script = ExtResource("1_g2els")
 attackComponent = NodePath("AttackComponent")
 attackArea = NodePath("AttackComponent/AttackArea")
