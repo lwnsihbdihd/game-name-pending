@@ -1,7 +1,6 @@
 extends Node2D
 class_name AttackComponent
 
-@export var hitboxComponent: HitboxComponent
 @export var attackDamage: int
 @export var hasAttackAnim: bool
 @export var hasRangedAttack: bool
@@ -15,8 +14,6 @@ class_name AttackComponent
 var canAttack: bool = true
 
 func attack() -> void:
-	if hitboxComponent:
-		hitboxComponent.takeDamage(attackDamage)
 	if hasAttackAnim:
 		get_parent().get_node("Sprite").play("attack")
 	attackCDTimer.start(attackCD)
@@ -29,3 +26,7 @@ func rangedAttack() -> void:
 
 func onAttackCDTimeout() -> void:
 	canAttack = true
+
+func onAreaEnteredAttackArea(area: Area2D) -> void:
+	if area.has_node("HitboxComponent"):
+		area.get_node("HitboxComponent").takeDamage(attackDamage)

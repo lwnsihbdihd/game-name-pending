@@ -3,7 +3,6 @@ extends CharacterBody2D
 @export var attackComponent: AttackComponent
 @export var hitboxComponent: HitboxComponent
 @export var healthComponent: HealthComponent
-@export var attackCD: Timer
 
 var level: Node
 
@@ -33,16 +32,3 @@ func _process(_delta: float) -> void:
 
 func die() -> void:
 	queue_free()
-
-
-func _on_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
-		if canAttack:
-			canAttack = false
-			attackComponent.attack()
-			attackCD.start(2)
-			print("attack")
-
-
-func onAttackCDTimeout() -> void:
-	canAttack = true

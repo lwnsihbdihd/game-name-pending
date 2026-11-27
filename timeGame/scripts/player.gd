@@ -5,6 +5,7 @@ class_name Player
 @export var attackArea: CollisionShape2D
 @export var healthComponent: HealthComponent
 @export var hitboxComponent: HitboxComponent
+@export var bullet: ProjectileComponent
 
 @export var sprite: AnimatedSprite2D
 
@@ -36,14 +37,15 @@ func _physics_process(delta: float) -> void:
 	if not isAlive:
 		return
 	
+	if Input.is_action_just_pressed("shoot"):
+		bullet.shoot(get_global_mouse_position())
+	
 	if Input.is_action_just_pressed("attack"):
 		attackComponent.attack()
 		if sprite.animation == "attack" and sprite.frame == 2:
 			attackArea.disabled = false
 		else:
 			attackArea.disabled = true
-	
-	
 	
 	if canMove:
 		# Get the input direction and handle the movement/deceleration.

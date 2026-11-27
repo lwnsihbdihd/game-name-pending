@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d2a27ehmuec7n" path="res://scenes/attack_component.tscn" id="3_qlg0r"]
 [ext_resource type="PackedScene" uid="uid://c70mindloupha" path="res://scenes/health_component.tscn" id="4_tuyoq"]
 [ext_resource type="PackedScene" uid="uid://cdyr7vcju4p2g" path="res://scenes/hitbox_component.tscn" id="5_fjrip"]
+[ext_resource type="PackedScene" uid="uid://wh8twwpm8ytr" path="res://scenes/projectile_component.tscn" id="6_tuyoq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ujbg4"]
 animations = [{
@@ -40,7 +41,13 @@ size = Vector2(120, 120)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fik85"]
 size = Vector2(105, 140)
 
-[node name="Player" type="CharacterBody2D" unique_id=497664569 node_paths=PackedStringArray("attackComponent", "attackArea", "healthComponent", "hitboxComponent", "sprite")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fjrip"]
+size = Vector2(14, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_smehm"]
+size = Vector2(10, 26)
+
+[node name="Player" type="CharacterBody2D" unique_id=497664569 node_paths=PackedStringArray("attackComponent", "attackArea", "healthComponent", "hitboxComponent", "bullet", "sprite")]
 scale = Vector2(0.5, 0.5)
 collision_mask = 6
 script = ExtResource("1_g2els")
@@ -48,6 +55,7 @@ attackComponent = NodePath("AttackComponent")
 attackArea = NodePath("AttackComponent/AttackArea")
 healthComponent = NodePath("HealthComponent")
 hitboxComponent = NodePath("HitboxComponent")
+bullet = NodePath("Bullet")
 sprite = NodePath("Sprite")
 dashMaxCD = 3.0
 
@@ -71,10 +79,59 @@ healthComponent = NodePath("../HealthComponent")
 shape = SubResource("RectangleShape2D_ujbg4")
 
 [node name="AttackComponent" parent="." unique_id=1130353186 instance=ExtResource("3_qlg0r")]
+attackDamage = 10
+hasAttackAnim = true
+hasMeleeAttack = true
+meleeRange = Vector2(20, 20)
 
 [node name="AttackArea" type="CollisionShape2D" parent="AttackComponent" unique_id=504307734]
 position = Vector2(128, 2)
 shape = SubResource("RectangleShape2D_fik85")
 disabled = true
 
+[node name="Gun" type="Node2D" parent="." unique_id=1127885031]
+
+[node name="Barrel" type="Sprite2D" parent="Gun" unique_id=2075563565]
+modulate = Color(2.736408, 0, 0, 1)
+position = Vector2(89.00001, 1.0000001)
+scale = Vector2(0.29060557, 0.09895324)
+texture = ExtResource("1_3vyb7")
+
+[node name="Handle" type="Sprite2D" parent="Gun" unique_id=712955281]
+modulate = Color(2.736408, 0, 0, 1)
+position = Vector2(69.875, 10.500002)
+scale = Vector2(0.09570318, 0.19531247)
+texture = ExtResource("1_3vyb7")
+
+[node name="FirePoint" type="Node2D" parent="." unique_id=821268895]
+position = Vector2(107, 1)
+
+[node name="Bullet" parent="." unique_id=806908269 instance=ExtResource("6_tuyoq")]
+visible = false
+attackDamage = 7.0
+initialSpeed = 10.0
+acceleration = 2.0
+shootFrom = Vector2(107, 1)
+CD = 0.5
+
+[node name="Sprite" type="Sprite2D" parent="Bullet" unique_id=1915396383]
+visible = false
+scale = Vector2(0.109375, 0.234375)
+texture = ExtResource("1_3vyb7")
+
+[node name="Collisionbox" type="CollisionShape2D" parent="Bullet" unique_id=1139132991]
+visible = false
+shape = SubResource("RectangleShape2D_fjrip")
+
+[node name="HitboxComponent" parent="Bullet" unique_id=1972381777 instance=ExtResource("5_fjrip")]
+visible = false
+
+[node name="Hitbox" type="CollisionShape2D" parent="Bullet/HitboxComponent" unique_id=795743218]
+shape = SubResource("RectangleShape2D_smehm")
+
+[node name="HealthComponent" parent="Bullet" unique_id=291991089 instance=ExtResource("4_tuyoq")]
+visible = false
+maxHealth = 1
+
 [connection signal="area_entered" from="AttackComponent" to="." method="onAreaEnteredAttackArea"]
+[connection signal="area_entered" from="Bullet/HitboxComponent" to="Bullet/HitboxComponent" method="onAreaEntered"]

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d2a27ehmuec7n" path="res://scenes/attack_component.tscn" id="3_c4w8v"]
 [ext_resource type="PackedScene" uid="uid://cdyr7vcju4p2g" path="res://scenes/hitbox_component.tscn" id="4_xwavj"]
 [ext_resource type="PackedScene" uid="uid://c70mindloupha" path="res://scenes/health_component.tscn" id="5_nenq2"]
+[ext_resource type="PackedScene" uid="uid://d0kn8vfdrha3g" path="res://scenes/ai_component.tscn" id="6_xwavj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ujbg4"]
 animations = [{
@@ -30,16 +31,16 @@ size = Vector2(128, 128)
 size = Vector2(108, 124)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ur1y7"]
-size = Vector2(67, 67)
+size = Vector2(112, 114)
 
-[node name="Enemy" type="CharacterBody2D" unique_id=862889542 node_paths=PackedStringArray("sprite", "attackComponent", "hitboxComponent", "healthComponent", "attackCD")]
+[node name="Enemy" type="CharacterBody2D" unique_id=862889542 node_paths=PackedStringArray("sprite", "attackComponent", "hitboxComponent", "healthComponent")]
+modulate = Color(2.0727737, 1.6308516, 3.3985407, 1)
 collision_layer = 2
 script = ExtResource("1_md0e3")
 sprite = NodePath("Sprite")
 attackComponent = NodePath("AttackComponent")
 hitboxComponent = NodePath("HitboxComponent")
 healthComponent = NodePath("HealthComponent")
-attackCD = NodePath("AttackCD")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=256514667]
 sprite_frames = SubResource("SpriteFrames_ujbg4")
@@ -49,9 +50,12 @@ flip_v = true
 [node name="Collisionbox" type="CollisionShape2D" parent="." unique_id=1047647730]
 shape = SubResource("RectangleShape2D_ujbg4")
 
-[node name="AttackComponent" parent="." unique_id=1130353186 node_paths=PackedStringArray("hitboxComponent") instance=ExtResource("3_c4w8v")]
-hitboxComponent = NodePath("../HitboxComponent")
+[node name="AttackComponent" parent="." unique_id=1130353186 instance=ExtResource("3_c4w8v")]
 attackDamage = 5
+hasAttackAnim = true
+hasMeleeAttack = true
+meleeRange = Vector2(10, 10)
+attackCD = 1.0
 
 [node name="AttackArea" type="CollisionShape2D" parent="AttackComponent" unique_id=2141543443]
 position = Vector2(126, 3)
@@ -61,12 +65,10 @@ shape = SubResource("RectangleShape2D_du8vl")
 healthComponent = NodePath("../HealthComponent")
 
 [node name="Hitbox" type="CollisionShape2D" parent="HitboxComponent" unique_id=1346816118]
-position = Vector2(23.5, 23.5)
 shape = SubResource("RectangleShape2D_ur1y7")
 
 [node name="HealthComponent" parent="." unique_id=46717471 instance=ExtResource("5_nenq2")]
 maxHealth = 20
 
-[node name="AttackCD" type="Timer" parent="." unique_id=1628205214]
-
-[connection signal="timeout" from="AttackCD" to="." method="onAttackCDTimeout"]
+[node name="AIComponent" parent="." unique_id=1671444073 node_paths=PackedStringArray("attackComponent") instance=ExtResource("6_xwavj")]
+attackComponent = NodePath("../AttackComponent")

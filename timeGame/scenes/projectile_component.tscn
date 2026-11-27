@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://wh8twwpm8ytr"]
+
+[ext_resource type="Script" uid="uid://c21gfm4m25au" path="res://projectile_component.gd" id="1_igg0b"]
+
+[node name="ProjectileComponent" type="Area2D" unique_id=806908269]
+script = ExtResource("1_igg0b")
+
+[node name="CDTimer" type="Timer" parent="." unique_id=832084253]
+
+[connection signal="timeout" from="CDTimer" to="." method="onCDTimeout"]
